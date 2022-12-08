@@ -13,23 +13,30 @@ const DataRickMorty = () => {
 			.catch((error) => console.log(`Error ${error}`));
 	}, []);
 
-	console.log(characters);
+	let sortedResults = characters.filter(
+		(character) => character.status === status
+	);
+
+	const charactersData = sortedResults.map(({ id, name, status, image }) => {
+		return <Card key={`rm-${id}`} name={name} status={status} pic={image} />;
+	});
+
+	const handleChangeStatus = (event) => {
+		setStatus(event.target.value);
+	};
 
 	return (
 		<div>
 			<select
 				name='dead or alive status'
 				value={status}
-				onChange={(event) => setStatus(event.target.value)}
+				onChange={handleChangeStatus}
 				required>
-				<option value={'alive'}>ALIVE</option>
-				<option value={'dead'}>DEAD</option>
+				<option value={'Alive'}>ALIVE</option>
+				<option value={'Dead'}>DEAD</option>
 				<option value={'unknown'}>UNKNOWN</option>
 			</select>
-
-			{characters.map(({ id, name, status, image }) => (
-				<Card key={`rm-${id}`} name={name} status={status} pic={image} />
-			))}
+			{charactersData}
 		</div>
 	);
 };
